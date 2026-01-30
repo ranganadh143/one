@@ -1,92 +1,105 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>in.javahome</groupId>
     <artifactId>myweb</artifactId>
-    <packaging>war</packaging>
     <version>8.3.8</version>
+    <packaging>war</packaging>
+
     <name>Java Home myweb</name>
-    <url>http://maven.apache.org</url>
 
+    <!-- ========================= -->
+    <!--        PROPERTIES         -->
+    <!-- ========================= -->
     <properties>
-        <docker.image.prefix>kammana</docker.image.prefix>
-        <sonar.host.url>http://18.181.164.81:9000/</sonar.host.url>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <!-- Recommended for Java 8, adjust as needed -->
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <java.version>1.8</java.version>
+
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+
+        <sonar.host.url>http://18.181.164.81:9000</sonar.host.url>
     </properties>
 
+    <!-- ========================= -->
+    <!--        DEPENDENCIES       -->
+    <!-- ========================= -->
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8.1</version>
+            <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
 
+    <!-- ========================= -->
+    <!--   DISTRIBUTION MGMT      -->
+    <!-- ========================= -->
     <distributionManagement>
         <snapshotRepository>
             <id>nexusRepo</id>
             <url>http://34.208.218.12:8081/repository/sample-snapshots/</url>
         </snapshotRepository>
-
         <repository>
             <id>nexusRepo</id>
             <url>http://52.3.250.161:8081/repository/repo-1/</url>
         </repository>
     </distributionManagement>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>maven1</id>
-            <name>Maven.org</name>
-            <url>http://repo1.maven.org/maven2</url>
-        </pluginRepository>
-    </pluginRepositories>
-
     <!-- ========================= -->
-    <!--        BUILD SECTION       -->
+    <!--           BUILD           -->
     <!-- ========================= -->
     <build>
 
-    <!-- Force plugin versions (overrides parent POMs) -->
-    <pluginManagement>
+        <!-- FORCE plugin versions -->
+        <pluginManagement>
+            <plugins>
+
+                <!-- WAR plugin (FIXED) -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>3.3.2</version>
+                </plugin>
+
+                <!-- Compiler -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.11.0</version>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
+
+        <!-- Plugins actually used -->
         <plugins>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.3.2</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+
         </plugins>
-    </pluginManagement>
 
-    <!-- Actual plugins used -->
-    <plugins>
-
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-war-plugin</artifactId>
-            <configuration>
-                <failOnMissingWebXml>false</failOnMissingWebXml>
-            </configuration>
-        </plugin>
-
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.11.0</version>
-            <configuration>
-                <source>1.8</source>
-                <target>1.8</target>
-            </configuration>
-        </plugin>
-
-    </plugins>
-</build>
+    </build>
 
 </project>
